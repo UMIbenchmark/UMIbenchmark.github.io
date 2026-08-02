@@ -1,6 +1,13 @@
 name: Refresh visitor trend
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - index.html
+      - styles.css
+      - .github/workflows/update-visitor-trend.yml
   schedule:
     - cron: "17 1 * * *"
   workflow_dispatch:
