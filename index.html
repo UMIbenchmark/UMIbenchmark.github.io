@@ -306,8 +306,11 @@
       <div class="visitor-activity-inner">
         <div class="visitor-activity-copy">
           <p class="eyebrow">Visitor activity</p>
-          <h2 id="visitor-activity-title">Visits over the last 30 days</h2>
-          <p class="visitor-total" id="visitor-total" aria-live="polite">Collecting activity</p>
+          <h2 id="visitor-activity-title">Visitor activity</h2>
+          <div class="visitor-metrics" aria-live="polite">
+            <p><span>All-time visits</span><strong id="visitor-all-time">--</strong></p>
+            <p><span>Last 30 days</span><strong id="visitor-total">--</strong></p>
+          </div>
           <p class="visitor-updated" id="visitor-updated">Daily visits update automatically.</p>
         </div>
         <div class="visitor-chart-wrap">
@@ -336,6 +339,7 @@
     <script>
       (function () {
         var total = document.getElementById('visitor-total');
+        var allTime = document.getElementById('visitor-all-time');
         var updated = document.getElementById('visitor-updated');
         var description = document.getElementById('visitor-chart-description');
         var line = document.getElementById('visitor-line');
@@ -366,9 +370,10 @@
 
           line.setAttribute('points', points.join(' '));
           area.setAttribute('d', 'M ' + left + ' ' + bottom + ' L ' + points.join(' L ') + ' L ' + right + ' ' + bottom + ' Z');
-          total.textContent = formatNumber(Number(data.total) || 0) + ' visits';
+          allTime.textContent = formatNumber(Number(data.allTimeTotal) || Number(data.total) || 0);
+          total.textContent = formatNumber(Number(data.total) || 0);
           updated.textContent = 'Daily activity, updated ' + (data.updatedAt || 'recently').slice(0, 10) + '.';
-          description.textContent = 'Daily visits for the last 30 days, with ' + formatNumber(Number(data.total) || 0) + ' visits in total.';
+          description.textContent = 'Daily visits for the last 30 days, with ' + formatNumber(Number(data.total) || 0) + ' visits during this period.';
         }
 
         fetch('https://umibenchmark.github.io/assets/data/visitor-trend.json', { cache: 'no-store' })

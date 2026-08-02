@@ -28,6 +28,15 @@ jobs:
         run: |
           start="$(date -u -d '29 days ago' +'%Y-%m-%dT00:00:00Z')"
           end="$(date -u +'%Y-%m-%dT%H:00:00Z')"
+          all_time_start="2026-01-01T00:00:00Z"
+          curl --fail --silent --show-error \
+            --get \
+            --header "Content-Type: application/json" \
+            --header "Authorization: Bearer ${GOATCOUNTER_API_KEY}" \
+            --data-urlencode "start=${all_time_start}" \
+            --data-urlencode "end=${end}" \
+            "https://umi-benchmark.goatcounter.com/api/v0/stats/total" \
+            > /tmp/goatcounter-total.json
           curl --fail --silent --show-error \
             --get \
             --header "Content-Type: application/json" \
@@ -42,6 +51,7 @@ jobs:
           from pathlib import Path
 
           payload = json.loads(Path('/tmp/goatcounter-stats.json').read_text())
+          all_time_payload = json.loads(Path('/tmp/goatcounter-total.json').read_text())
           visits_by_day = {
               item['day']: int(item.get('daily') or 0)
               for item in payload.get('stats', [])
@@ -55,6 +65,7 @@ jobs:
               days.append({'date': day_key, 'visits': visits_by_day.get(day_key, 0)})
 
           result = {
+              'allTimeTotal': int(all_time_payload.get('total') or 0),
               'total': sum(day['visits'] for day in days),
               'days': days,
               'updatedAt': datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z'),

@@ -529,12 +529,28 @@ figcaption {
   letter-spacing: 0;
 }
 
-.visitor-total {
-  margin: 18px 0 0;
-  color: var(--ink);
-  font-size: 17px;
+.visitor-metrics {
+  display: flex;
+  gap: 26px;
+  margin-top: 20px;
+}
+
+.visitor-metrics p {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 11px;
   font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.visitor-metrics strong {
+  color: var(--ink);
+  font-size: 26px;
   font-variant-numeric: tabular-nums;
+  line-height: 1.15;
 }
 
 .visitor-updated {
@@ -643,6 +659,10 @@ figcaption {
 
   .visitor-activity h2 {
     max-width: 360px;
+  }
+
+  .visitor-metrics {
+    gap: 22px;
   }
 
   .visitor-chart {
