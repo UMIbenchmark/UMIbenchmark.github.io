@@ -17,6 +17,7 @@ permissions:
 
 jobs:
   refresh:
+    if: github.repository == 'UMIbenchmark/UMIbenchmark.github.io'
     runs-on: ubuntu-latest
     steps:
       - name: Check out website
