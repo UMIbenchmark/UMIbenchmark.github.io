@@ -1,0 +1,66 @@
+name: Refresh visitor trend
+
+on:
+  schedule:
+    - cron: "17 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out website
+        uses: actions/checkout@v4
+
+      - name: Fetch the last 30 days of visits
+        env:
+          GOATCOUNTER_API_KEY: ${{ secrets.GOATCOUNTER_API_KEY }}
+        run: |
+          start="$(date -u -d '29 days ago' +'%Y-%m-%dT00:00:00Z')"
+          end="$(date -u +'%Y-%m-%dT%H:00:00Z')"
+          curl --fail --silent --show-error \
+            --get \
+            --header "Authorization: Bearer ${GOATCOUNTER_API_KEY}" \
+            --data-urlencode "start=${start}" \
+            --data-urlencode "end=${end}" \
+            "https://umi-benchmark.goatcounter.com/api/v0/stats/total" \
+            > /tmp/goatcounter-stats.json
+          python3 - <<'PY'
+          import json
+          from datetime import datetime, timedelta, timezone
+          from pathlib import Path
+
+          payload = json.loads(Path('/tmp/goatcounter-stats.json').read_text())
+          visits_by_day = {
+              item['day']: int(item.get('daily') or 0)
+              for item in payload.get('stats', [])
+              if item.get('day')
+          }
+          today = datetime.now(timezone.utc).date()
+          days = []
+          for offset in range(29, -1, -1):
+              day = today - timedelta(days=offset)
+              day_key = day.isoformat()
+              days.append({'date': day_key, 'visits': visits_by_day.get(day_key, 0)})
+
+          result = {
+              'total': sum(day['visits'] for day in days),
+              'days': days,
+              'updatedAt': datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace('+00:00', 'Z'),
+          }
+          Path('assets/data/visitor-trend.json').write_text(json.dumps(result, indent=2) + '\n')
+          PY
+
+      - name: Commit refreshed trend data
+        run: |
+          if git diff --quiet -- assets/data/visitor-trend.json; then
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/data/visitor-trend.json
+          git commit -m "Refresh visitor trend data"
+          git push

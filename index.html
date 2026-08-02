@@ -302,24 +302,84 @@
       </section>
     </main>
 
+    <section class="visitor-activity" aria-labelledby="visitor-activity-title">
+      <div class="visitor-activity-inner">
+        <div class="visitor-activity-copy">
+          <p class="eyebrow">Visitor activity</p>
+          <h2 id="visitor-activity-title">Visits over the last 30 days</h2>
+          <p class="visitor-total" id="visitor-total" aria-live="polite">Collecting activity</p>
+          <p class="visitor-updated" id="visitor-updated">Daily visits update automatically.</p>
+        </div>
+        <div class="visitor-chart-wrap">
+          <svg class="visitor-chart" id="visitor-chart" viewBox="0 0 620 120" role="img" aria-labelledby="visitor-chart-title visitor-chart-description" preserveAspectRatio="none">
+            <title id="visitor-chart-title">Visitor activity over the last 30 days</title>
+            <desc id="visitor-chart-description">Daily visits are being collected.</desc>
+            <line class="visitor-gridline" x1="8" y1="24" x2="612" y2="24"></line>
+            <line class="visitor-gridline" x1="8" y1="54" x2="612" y2="54"></line>
+            <line class="visitor-gridline" x1="8" y1="84" x2="612" y2="84"></line>
+            <path class="visitor-area" id="visitor-area"></path>
+            <polyline class="visitor-line" id="visitor-line" points=""></polyline>
+          </svg>
+          <div class="visitor-axis" aria-hidden="true">
+            <span>30 days ago</span>
+            <span>Today</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <footer class="footer">
       <p>UMI-Bench 1.0</p>
-      <p class="site-views" aria-live="polite">Site views <span id="site-views-count">--</span></p>
       <a href="#top">Back to top</a>
     </footer>
     <script data-goatcounter="https://umi-benchmark.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
     <script>
       (function () {
-        var target = document.getElementById('site-views-count');
-        var request = new XMLHttpRequest();
+        var total = document.getElementById('visitor-total');
+        var updated = document.getElementById('visitor-updated');
+        var description = document.getElementById('visitor-chart-description');
+        var line = document.getElementById('visitor-line');
+        var area = document.getElementById('visitor-area');
 
-        request.addEventListener('load', function () {
-          if (request.status !== 200) return;
-          target.textContent = JSON.parse(request.responseText).count;
-        });
+        function formatNumber(value) {
+          return new Intl.NumberFormat('en-US').format(value);
+        }
 
-        request.open('GET', 'https://umi-benchmark.goatcounter.com/counter/TOTAL.json');
-        request.send();
+        function renderTrend(data) {
+          if (!data || !Array.isArray(data.days) || !data.days.length) return;
+
+          var values = data.days.map(function (day) {
+            return Number(day.visits) || 0;
+          });
+          var maximum = Math.max.apply(null, values.concat([1]));
+          var left = 8;
+          var right = 612;
+          var top = 12;
+          var bottom = 92;
+          var width = right - left;
+          var height = bottom - top;
+          var points = values.map(function (value, index) {
+            var x = left + (width * index / Math.max(values.length - 1, 1));
+            var y = bottom - (value / maximum * height);
+            return x.toFixed(2) + ',' + y.toFixed(2);
+          });
+
+          line.setAttribute('points', points.join(' '));
+          area.setAttribute('d', 'M ' + left + ' ' + bottom + ' L ' + points.join(' L ') + ' L ' + right + ' ' + bottom + ' Z');
+          total.textContent = formatNumber(Number(data.total) || 0) + ' visits';
+          updated.textContent = 'Daily activity, updated ' + (data.updatedAt || 'recently').slice(0, 10) + '.';
+          description.textContent = 'Daily visits for the last 30 days, with ' + formatNumber(Number(data.total) || 0) + ' visits in total.';
+        }
+
+        fetch('https://umibenchmark.github.io/assets/data/visitor-trend.json', { cache: 'no-store' })
+          .then(function (response) {
+            if (!response.ok) throw new Error('Trend data unavailable');
+            return response.json();
+          })
+          .then(renderTrend)
+          .catch(function () {
+            updated.textContent = 'Daily visits update automatically.';
+          });
       }());
     </script>
   </body>
