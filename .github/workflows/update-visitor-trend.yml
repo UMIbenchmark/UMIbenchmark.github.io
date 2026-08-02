@@ -30,6 +30,7 @@ jobs:
           end="$(date -u +'%Y-%m-%dT%H:00:00Z')"
           curl --fail --silent --show-error \
             --get \
+            --header "Content-Type: application/json" \
             --header "Authorization: Bearer ${GOATCOUNTER_API_KEY}" \
             --data-urlencode "start=${start}" \
             --data-urlencode "end=${end}" \
