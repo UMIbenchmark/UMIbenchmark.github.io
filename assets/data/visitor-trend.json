@@ -1,19 +1,7 @@
 {
-  "allTimeTotal": 86,
-  "total": 86,
+  "allTimeTotal": 93,
+  "total": 93,
   "days": [
-    {
-      "date": "2026-07-19",
-      "visits": 0
-    },
-    {
-      "date": "2026-07-20",
-      "visits": 0
-    },
-    {
-      "date": "2026-07-21",
-      "visits": 0
-    },
     {
       "date": "2026-07-22",
       "visits": 0
@@ -120,8 +108,20 @@
     },
     {
       "date": "2026-08-17",
-      "visits": 3
+      "visits": 4
+    },
+    {
+      "date": "2026-08-18",
+      "visits": 5
+    },
+    {
+      "date": "2026-08-19",
+      "visits": 1
+    },
+    {
+      "date": "2026-08-20",
+      "visits": 0
     }
   ],
-  "updatedAt": "2026-08-17T02:34:28Z"
+  "updatedAt": "2026-08-20T02:30:39Z"
 }
