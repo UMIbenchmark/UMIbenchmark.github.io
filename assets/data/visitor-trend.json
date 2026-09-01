@@ -1,22 +1,10 @@
 {
-  "allTimeTotal": 125,
-  "total": 125,
+  "allTimeTotal": 137,
+  "total": 121,
   "days": [
     {
-      "date": "2026-07-31",
-      "visits": 0
-    },
-    {
-      "date": "2026-08-01",
-      "visits": 0
-    },
-    {
-      "date": "2026-08-02",
-      "visits": 13
-    },
-    {
       "date": "2026-08-03",
-      "visits": 15
+      "visits": 12
     },
     {
       "date": "2026-08-04",
@@ -120,8 +108,20 @@
     },
     {
       "date": "2026-08-29",
-      "visits": 0
+      "visits": 1
+    },
+    {
+      "date": "2026-08-30",
+      "visits": 1
+    },
+    {
+      "date": "2026-08-31",
+      "visits": 8
+    },
+    {
+      "date": "2026-09-01",
+      "visits": 2
     }
   ],
-  "updatedAt": "2026-08-29T07:53:30Z"
+  "updatedAt": "2026-09-01T06:14:49Z"
 }
