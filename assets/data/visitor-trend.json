@@ -1,15 +1,7 @@
 {
-  "allTimeTotal": 143,
+  "allTimeTotal": 153,
   "total": 112,
   "days": [
-    {
-      "date": "2026-08-05",
-      "visits": 4
-    },
-    {
-      "date": "2026-08-06",
-      "visits": 6
-    },
     {
       "date": "2026-08-07",
       "visits": 5
@@ -120,8 +112,16 @@
     },
     {
       "date": "2026-09-03",
-      "visits": 1
+      "visits": 3
+    },
+    {
+      "date": "2026-09-04",
+      "visits": 6
+    },
+    {
+      "date": "2026-09-05",
+      "visits": 2
     }
   ],
-  "updatedAt": "2026-09-03T05:48:29Z"
+  "updatedAt": "2026-09-05T05:45:35Z"
 }
