@@ -1,23 +1,7 @@
 {
-  "allTimeTotal": 353,
-  "total": 100,
+  "allTimeTotal": 364,
+  "total": 90,
   "days": [
-    {
-      "date": "2026-10-09",
-      "visits": 5
-    },
-    {
-      "date": "2026-10-10",
-      "visits": 7
-    },
-    {
-      "date": "2026-10-11",
-      "visits": 5
-    },
-    {
-      "date": "2026-10-12",
-      "visits": 4
-    },
     {
       "date": "2026-10-13",
       "visits": 1
@@ -120,8 +104,24 @@
     },
     {
       "date": "2026-11-07",
-      "visits": 0
+      "visits": 1
+    },
+    {
+      "date": "2026-11-08",
+      "visits": 1
+    },
+    {
+      "date": "2026-11-09",
+      "visits": 5
+    },
+    {
+      "date": "2026-11-10",
+      "visits": 1
+    },
+    {
+      "date": "2026-11-11",
+      "visits": 3
     }
   ],
-  "updatedAt": "2026-11-07T07:11:21Z"
+  "updatedAt": "2026-11-11T07:45:05Z"
 }
